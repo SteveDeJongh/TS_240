@@ -92,3 +92,44 @@ function movePoint(point: Point, dx: number, dy: number): Point {
     y: point.y + dy,
   };
 }
+
+// Practice Problems: Type Assertiosn
+
+// 1
+
+// No, there are no type errors. The value of `age` will be `2`. 'age as string' allows us to use the `length` property of `string`.
+
+// Practice Problems: Classes
+
+// 1
+
+class Person {
+  age?: number;
+  name: string;
+
+  constructor(age?: number, name: string) { // Swap around params to avoid Type Error
+    this.name = name;
+    this.age = age;
+  }
+}
+
+// This will raise a type error because due to a required parameter appearing after a option paramter.
+
+// 2
+
+interface Movable {
+  speed: number;
+  move(): void;
+}
+
+class Car implements Movable {
+  speed: number;
+
+  constructor(speed: number) {
+    this.speed = speed;
+  }
+
+  move() {
+    console.log(`We're moving at ${this.speed} km/h!`);
+  }
+}
