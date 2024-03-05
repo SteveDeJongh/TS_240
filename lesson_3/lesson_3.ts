@@ -43,3 +43,22 @@ const concatenated: string = combine("Hello, ", "World!"); // Type 'string | num
 
 const added: number = combine(5, 10); // Type 'string | number' is not assignable to type 'string'.
 // Type 'string' is not assignable to type 'number'.
+
+// Generics
+function first<T>(a: T[]): T {
+  return a[0];
+}
+
+console.log(typeof first(['s', 's'])); // string
+console.log(typeof first([1, 's'])); // number
+
+// Practice Problems: Generic Functions
+
+// 1
+
+function pair<T>(a: T, b: T): T[] {
+  return [a, b];
+}
+
+const pairOfNumbers = pair(1, 2); // returns [1, 2]
+const pairOfStrings = pair("hello", "world"); // returns ["hello", "world"]
