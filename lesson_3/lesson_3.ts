@@ -62,3 +62,70 @@ function pair<T>(a: T, b: T): T[] {
 
 const pairOfNumbers = pair(1, 2); // returns [1, 2]
 const pairOfStrings = pair("hello", "world"); // returns ["hello", "world"]
+
+// Practice Problems: Generic Objects
+
+// 1
+
+type Pair<T, U> = {
+  first: T;
+  second: U;
+};
+
+const myPair: Pair<number, string> = {
+  first: 42,
+  second: "Answer",
+};
+
+const yourPair: Pair<number, string> = {
+  first: "Another answer",
+  second: 42,
+};
+
+// The code misuses the generic object type for the yourPair object. The yourPair object is declared as a Pair<number, string>, but has a first property of type string and a second property of type number, which violates the expected generic object types.
+
+// 2
+
+type KeyValuePairs<T, U> = {
+  key: T;
+  values: U[];
+};
+
+const myPairs: KeyValuePairs<string, number> = {
+  key: "Numbers",
+  values: [1, 2, 3, 4, 5],
+};
+
+const yourPairs: KeyValuePairs<number, string> = {
+  key: 42,
+  values: ["One", "Two", 3, "Four"],
+};
+
+// The code missues the generic object type for the yourPair object. This is because we attempt to assign a number within the array assigned to values, which is expecting an array of only type `string` elements.
+
+// Practice Problems: Generic Arrays (Does the code below use the generic array type correctly?)
+
+// 1
+
+let numbers: Array<number> = [1, 2, 3];
+
+// Yes
+
+// 2
+
+let strings: string[] = ["apple", "banana", "cherry"];
+
+// Yes
+
+// 3
+
+let bools: boolean[[]] = [true, false, true];
+
+// No, the correct syntax would be `boolean[]`.
+
+// 4
+
+type FruitNames = "apple" | "banana" | "cherry";
+const fruits: Array<FruitNames> = ["apple", "banana", "mango"];
+
+// The code properly defines a generic array, however the last element in the `fruits` array will raise a TypeError as the `FruitNames` type does not include the string ltieral `mango`.
