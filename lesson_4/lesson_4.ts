@@ -105,6 +105,73 @@ function getVehicleInfo(vehicle: Vehicle) {
 
 getVehicleInfo({ type: "bicycle", isElectric: true });
 
-// Thus wukk rause a type error as both objects within the Vehicle type do not have a `kind` property.
+// This will rause a type error as both objects within the Vehicle type do not have a `kind` property.
 
-// 
+// Practice Problems: Discriminated Unions
+
+// 1
+
+// type Animal =
+//   | {
+//       species: "dog";
+//       name: string;
+//       age: number;
+//     }
+//   | {
+//       species: "bird";
+//       name: string;
+//       wingspan: number;
+//     };
+
+// function describeAnimal(animal: Animal): string {
+//   if (animal.species === "dog") {
+//     return `${animal.name} is a ${animal.age} year(s) old dog.`;
+//   } else if (animal.species === "bird") {
+//     return `${animal.name} is a bird with a ${animal.wingspan} cm wingspan.`;
+//   } else {
+//     // We should never reach this point because of the discriminated union
+//     throw new Error("Unknown animal species");
+//   }
+// }
+
+// Practice problems: Exhaustiveness Checking
+
+// 1
+
+type Elephant = {
+  kind: "elephant";
+  weight: number;
+};
+
+type Tiger = {
+  kind: "tiger";
+  speed: number;
+};
+
+type Peacock = {
+  kind: "peacock";
+  featherLength: number;
+};
+
+type Animal = Elephant | Tiger | Peacock;
+
+function describeAnimal(animal: Animal): string {
+  switch (animal.kind) {
+    case 'elephant':
+      return `An elephant weights ${animal.weight} kg.`;
+      break;
+    case 'tiger':
+      return `A tiger runs at ${animal.speed} kp/h.`;
+      break;
+    case 'peacock':
+      return `A peacock has ${animal.featherLength} long feathers.`;
+      break;
+    default:
+      const _exhaustiveCheck: never = animal;
+      return `Unknown animal: ${JSON.stringify(_exhaustiveCheck)}`;
+  }
+}
+
+// 2
+
+// If we add a `Giraffe` type to our animal union and make no changes to the describeAnimal function, if we pass in a Giraffe we'll end up in the default case and raise an error.
