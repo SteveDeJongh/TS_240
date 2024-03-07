@@ -159,13 +159,10 @@ function describeAnimal(animal: Animal): string {
   switch (animal.kind) {
     case 'elephant':
       return `An elephant weights ${animal.weight} kg.`;
-      break;
     case 'tiger':
       return `A tiger runs at ${animal.speed} kp/h.`;
-      break;
     case 'peacock':
       return `A peacock has ${animal.featherLength} long feathers.`;
-      break;
     default:
       const _exhaustiveCheck: never = animal;
       return `Unknown animal: ${JSON.stringify(_exhaustiveCheck)}`;
@@ -175,3 +172,109 @@ function describeAnimal(animal: Animal): string {
 // 2
 
 // If we add a `Giraffe` type to our animal union and make no changes to the describeAnimal function, if we pass in a Giraffe we'll end up in the default case and raise an error.
+
+// Practice Problems: Uses of Any
+
+// 1
+
+// No, this code will not raise any type errors.
+
+// 2
+
+type Input = string | number | { length: number };
+
+function processInput(input: Input) {
+  // Your implementation here
+  if (typeof input === 'string') {
+    console.log(input.toUpperCase());
+  } else if (typeof input === 'number') {
+    console.log(input.toFixed(2));
+  } else if (Array.isArray(input)) {
+    console.log(input.length);
+  }
+}
+
+processInput("hello"); // Outputs: HELLO
+processInput(42); // Outputs: 42.00
+processInput([1, 2, 3]); // Outputs: 3
+
+// Practice Problems: Type Soudness
+
+// 1
+
+// example 1
+let x: any = "Launch School";
+const y: number = x;
+console.log(y);
+
+// example 2
+// let x: any = "Launch School";
+// const y: number = x as number;
+
+function isNumber(value: any): value is number {
+  return typeof value === "number";
+}
+
+if (isNumber(x)) {
+  const y = x;
+  console.log(y);
+} else {
+  console.log("x is not a number");
+}
+
+// 2
+
+function safeGet<T>(arr: T[], index: number) {
+  if (index >=0 && index < arr.length) {
+    return arr[index];
+  } else {
+    return undefined;
+  }
+}
+
+// Practice Problems: Unknown
+
+// 1
+
+const x: any = "Launch School";
+if (typeof x === "string") {
+  console.log(x.toUpperCase());
+} else {
+  console.log(x.toLowerCase());
+}
+
+const y: unknown = "Launch School";
+if (typeof y === "string") {
+  console.log(y.toUpperCase());
+} else {
+  console.log(y.toLowerCase());
+}
+
+// Only the 2nd code snipped would raise a type error. When something is typed as `any`, typescript does not perform any type checking.
+
+// 2
+
+let userInput: unknown;
+let userName: string;
+
+userInput = 5;
+userName = userInput;
+
+// Yes this will raise a typeError when attempting to assign userInput to userName.
+
+// 3
+
+function processData(data: unknown): string {
+  if (typeof data === 'string') {
+    return `Hello, ${data}`;
+  } else if (typeof data === 'number') {
+    return `Age: ${data}`;
+  } else {
+    throw new Error("Invalid data");
+  }
+}
+
+// Usage
+console.log(processData("Alice")); // Should print: "Hello, Alice"
+console.log(processData(25)); // Should print: "Age: 25"
+console.log(processData(true)); // Should throw an error: "Invalid data"
