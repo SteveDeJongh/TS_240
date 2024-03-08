@@ -1,7 +1,7 @@
 // Lesson 5
 
 // Practice Problems: Extending interfaces
-
+/*
 // 1
 
 class Animal {
@@ -137,3 +137,94 @@ console.log(Object.keys(obj).every((key) => typeof key === "number"));
 
 // 2
 
+type User = Map<number, string>;
+
+const obj: User = new Map();
+obj.set(1, "Jane");
+obj.set(2, "30");
+obj.set(3, "female");
+
+console.log(Object.keys(obj).every((key) => typeof key === "number")); // Output: true
+
+// Practice Problems: Arrays and Index Signatures
+
+// 1
+
+*/
+
+type CustomArray = {
+  [index: number]: string | number;
+};
+
+const customArray: CustomArray = ["apple", 42, "banana"];
+
+// function processCustomArray(arr: CustomArray) {
+//   let result: string[] = [];
+
+//   Object.keys(arr).forEach(v => {
+//     if (typeof arr[v] === 'string') {
+//       result.push(arr[v].toUpperCase());
+//     }
+//   })
+
+//   return result;
+// }
+
+const result = processCustomArray(customArray);
+console.log(result); // Output: ["APPLE", "BANANA"]
+
+// Alt
+
+function processCustomArray(arr: CustomArray) {
+  if (Array.isArray(arr)) {
+    return arr
+      .filter((element) => typeof element === "string")
+      .map((element) => element.toUpperCase());
+  }
+  return [];
+}
+
+// Practice Problems: The Object Type
+
+// 1
+
+// function getProperty(obj: {[key: string]: unknown}, key: string) {
+//   return obj[key];
+// }
+
+// 2
+
+function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
+  return obj[key];
+}
+
+const obj = {
+  name: "John",
+  age: 30,
+};
+
+const x = getProperty(obj, "name");
+const y = getProperty(obj, "age");
+
+// Practice Problems: The keyof Operator
+
+// 1
+
+interface Student {
+  name: string;
+  age: number;
+}
+
+let key: keyof Student = "grade"; // TypeError
+key = 'name'; // works
+key = 'age'; // works
+
+// Yes this will result in a type error. The type of `key` is essentially 'name' | 'age', and as the string literal 'grade' is neither of those, the error is raised.
+
+// Practice Problems: Generic constraints
+
+// 1
+
+function getProperty<T, K extends keyof T>(obj: T, key: K):  T[K] {
+  return obj[key];
+}
