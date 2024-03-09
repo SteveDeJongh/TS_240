@@ -183,3 +183,69 @@ interface User {
 
 type NameOnly = Pick<User, "name1">; // Raises an error as `name1` is not a property in `User`.
 type WithoutName = Omit<User, "name1">;
+
+// Practice Problems: ReturnType and Parameters
+
+// 1
+
+// The error here is that we're attempting to access teh paramters and return type of a function, and not the `typeof function`
+
+function addNumbers(a: number, b: number): number {
+  return a + b;
+}
+
+type AddNumbersParams = Parameters<typeof addNumbers>;
+type AddNumbersReturnType = ReturnType<typeof addNumbers>;
+
+type AddNumbersFunction = (...args: AddNumbersParams) => AddNumbersReturnType;
+
+// Practice Problems: Partial
+
+// 1
+
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  description: string;
+}
+
+const products: Product[] = [
+  {
+    id: 1,
+    name: "Sample Product",
+    price: 49.99,
+    description: "A sample product for demonstration",
+  },
+];
+
+function updateProduct(
+  productId: number,
+  updatedValues: Partial<Product>
+): void {
+  // Your implementation here:
+  // Find product to update by productId
+  // If found, apply partial update with using object spreading
+  // Else log out "Product not found"
+  let prodIdx = products.findIndex(prod => prod.id === productId);
+
+  if (prodIdx !== -1) {
+    products[prodIdx] = {...products[prodIdx], ...updatedValues};
+  } else {
+    console.log('Product not found.');
+  }
+}
+
+updateProduct(1, {
+  name: "Updated Product Name",
+  price: 99.99,
+});
+
+// Practice Problems: Object Values at Runtime
+
+// 1
+
+// This code will run without issues as we use a `type assertion` changing the `userSettings` object type to `any`, turning off any type checking, and allowing the changes to be made to read only properties.
+
+// `light`
+// [`email`, `push`, `sms`]
