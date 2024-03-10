@@ -65,6 +65,58 @@ function shapeInfoTypePredicate(shape: unknown): string {
   return text;
 }
 
+// Never
+
+type Car = {
+  kind: 'Car';
+  make: string;
+  wheels: number;
+}
+
+type Motorcycle = {
+  kind: 'Motorcycle';
+  make: string;
+  wheels: number;
+}
+
+// type Vehicle = Car | Motorcycle;
+
+// function describeVehicle(vehicle: Vehicle):void {
+//   switch (vehicle.kind) {
+//     case 'Car':
+//       console.log('I am a car!');
+//       break;
+//     case 'Motorcycle':
+//       console.log('I am a motorcycle!');
+//       break;
+//   }
+// }
+
+type Trike = {
+  kind: 'Trike';
+  make: string;
+  wheels: number;
+}
+
+type Vehicle = Car | Motorcycle | Trike; // Could potentially break the current implementation of describeVehicle
+
+function describeVehicle(vehicle: Vehicle):void {
+  switch (vehicle.kind) {
+    case 'Car':
+      console.log('I am a car!');
+      break;
+    case 'Motorcycle':
+      console.log('I am a motorcycle!');
+      break;
+    case 'Trike':
+      console.log('I am a trike!');
+      break;
+    default:
+      const _exhaustiveCheck: never = vehicle; // now raises an error, as we reach the condition with the `Trike` type.
+      throw new Error(`Invalid vehicle: ${JSON.stringify(_exhaustiveCheck)}`);
+  }
+}
+
 // Type Assertions
 
 type Value = {
