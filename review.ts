@@ -329,3 +329,71 @@ function isAFish(fish: Fish): void {
       return _shouldNeverReach;
   }
 }
+
+// Index Signatures
+
+interface People {
+  [name: string]: string;
+}
+
+// interface Account {
+//   [name: string]: string;
+//   accountId: number; // raises an error.
+// }
+
+interface Account {
+  [name: string]: string | number;
+  accountId: number; // works.
+}
+
+// Utility Types
+
+// Pick and Omit
+
+// Parameters
+
+type functionType = (a: string, b: number) => number;
+
+type onlyParams = Parameters<functionType>;// 
+
+let fromParamsCall: onlyParams = ['string', 1];
+
+// With Rest parameter
+
+function prefixValues(prefix: string, ...values: string[]):string {
+	return values.map(val => prefix + ' ' + val).join(', ');
+}
+
+type prefixType = Parameters<typeof prefixValues>; // [string, ...string[]];
+let input: prefixType = ['Hello', 'steve', 'tom', 'gerald'];
+
+console.log(prefixValues(...input));// 'Hello steve, Hello tom, Hello gerald
+
+// ReturnType
+
+type returnType = (() => string); // returnType = string;
+
+function createFish(name: string, species: string) {
+  return {name, species};
+}
+
+type Fish1 = ReturnType<typeof createFish>;
+
+// Partial
+
+type Todo1 = {
+	name: string;
+	description: string;
+}
+
+function updateTodo(todo: Todo1, updates: Partial<Todo1>) {
+	return {...todo, ...updates}; // updates spread after the intial todo spread will cause any properties already
+																// defined in todo to be update with the values from updates.
+}
+
+// Readonly / Require
+
+type Todo = { name: string; desc?: string; };
+
+let readOnly: Readonly<Todo> = {name: 'read only string'};
+let required: Required<Todo> = {name: 'Required string', desc: 'required desc'};

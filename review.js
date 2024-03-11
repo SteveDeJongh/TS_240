@@ -1,4 +1,15 @@
 // TS 249 - Review
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 // Special Types
 // Any
 var val = 'steve'; // works
@@ -68,3 +79,107 @@ function handleValue(arg) {
     var workingArg = arg; // type assertion to assign `arg` to `workingArg` and treat it as a `Value` type.
     return workingArg.name;
 }
+var f = { id: '1' }; // Type 'string' is not assignable to type 'never';
+var jetSki = {
+    kind: 'Jetski',
+    model: 'Seadoo',
+    year: 2020,
+};
+var kona = { make: 'Kona', model: 'Process' };
+var vehicle = kona; // works just fine.
+console.log(vehicle.make); // logs 'Kona';
+// Equality
+function example(arg1, arg2) {
+    if (arg1 === arg2) {
+        // arg1 and arg2 must both be strings
+    }
+    else {
+        // do something individually with each arg.
+    }
+}
+// Truthiness
+function example2(optionalArg) {
+    if (optionalArg) {
+        console.log(optionalArg.toUpperCase());
+        // do something with the argument that is of type `string`
+    }
+}
+// typeof
+function example3(arg) {
+    if (typeof arg === 'string') {
+        // do something with the arg when it's a string;
+    }
+    else {
+        // do something with the arg when it's a number;
+    }
+}
+// IN
+function defineClothing(piece) {
+    console.log("The piece is ".concat(piece.color));
+    console.log("The pants are ".concat(piece.length, " long.")); // raises an error as `length` is not available on all types within the `Clothing` type.
+    if ('length' in piece) {
+        console.log("The pants are ".concat(piece.length, " long.")); // works.
+    }
+}
+// instanceOf
+function example4(arg) {
+    if (arg instanceof Date) {
+        // do something with the arg as a date object.
+    }
+    else {
+        // do something when the arg is a string.
+    }
+}
+var husky = { breed: 'husky' };
+function isDog(pet) {
+    return pet.breed !== undefined;
+}
+if (isDog(husky)) {
+    console.log("My dog is a ".concat(husky.breed));
+}
+else {
+    console.log('I am not a dog');
+}
+function sharkOrFish(fish) {
+    if (fish.kind === "Goldfish") {
+        console.log(fish.bowl); // Ok, because fish will be a Goldfish type here.
+        console.log("I'm a goldfish and live in bowl!");
+    }
+    else {
+        console.log("I'm a shark and live in the ocean!");
+    }
+}
+// Never
+function isAFish(fish) {
+    switch (fish.kind) {
+        case 'Shark':
+            console.log('I am a shark!');
+            break;
+        case 'Goldfish':
+            console.log('I am a goldfish!');
+            break;
+        default:
+            var _shouldNeverReach = fish;
+            return _shouldNeverReach;
+    }
+}
+var fromParamsCall = ['string', 1];
+// With Rest parameter
+function prefixValues(prefix) {
+    var values = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        values[_i - 1] = arguments[_i];
+    }
+    return values.map(function (val) { return prefix + ' ' + val; }).join(', ');
+}
+var input = ['Hello', 'steve', 'tom', 'gerald'];
+console.log(prefixValues.apply(void 0, input)); // 
+function createFish(name, species) {
+    return { name: name, species: species };
+}
+function updateTodo(todo, updates) {
+    return __assign(__assign({}, todo), updates); // updates spread after the intial todo spread will cause any properties already
+    // defined in todo to be update with the values from updates.
+}
+var readOnly = { name: 'read only string' };
+var required = { name: 'Required string', desc: 'required desc' };
