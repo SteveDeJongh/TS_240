@@ -207,3 +207,125 @@ let vehicle: twoWheeler = kona; // works just fine.
 
 console.log(vehicle.make); // logs 'Kona';
 // console.log(vehicle.model); // raises a TypeErrorl `model` does not exist on type `twoWheeler`;
+
+// Type widening and narrowing
+
+// Widening
+
+type Union = string | number;
+
+// Narrowing
+
+type Shirts = { color: string; size: string; }
+type Pants = { color: string; size: string; length: number; }
+type Clothing = Shirts | Pants;
+
+// Equality
+
+function example(arg1: string | number, arg2: string | boolean) {
+  if (arg1 === arg2) {
+    // arg1 and arg2 must both be strings
+  } else {
+    // do something individually with each arg.
+  }
+}
+
+// Truthiness
+
+function example2(optionalArg?: string) {
+  if (optionalArg) {
+    console.log(optionalArg.toUpperCase())
+    // do something with the argument that is of type `string`
+  }
+}
+
+// typeof
+
+function example3(arg: string | number) {
+  if (typeof arg === 'string') {
+    // do something with the arg when it's a string;
+  } else {
+    // do something with the arg when it's a number;
+  }
+}
+
+// IN
+
+function defineClothing(piece: Clothing):void {
+  console.log(`The piece is ${piece.color}`);
+  console.log(`The pants are ${piece.length} long.`); // raises an error as `length` is not available on all types within the `Clothing` type.
+  if ('length' in piece) {
+    console.log(`The pants are ${piece.length} long.`); // works.
+  }
+}
+
+// instanceOf
+
+function example4(arg: Date | string) {
+  if (arg instanceof Date) {
+    // do something with the arg as a date object.
+  } else {
+    // do something when the arg is a string.
+  }
+}
+
+// Type Predicates
+
+// A type predicate is a `type as DesiredType` return value for a function
+
+type Dog = {
+  breed: string;
+}
+
+let husky: Dog = {breed: 'husky'}
+
+function isDog(pet: Dog | Person): pet is Dog {
+  return (pet as Dog).breed !== undefined;
+}
+
+if (isDog(husky)) {
+  console.log(`My dog is a ${husky.breed}`);
+} else {
+	console.log('I am not a dog');
+}
+
+// Discriminated unions
+
+interface Goldfish {
+  kind: "Goldfish";
+  age: number;
+  bowl: string;
+}
+
+interface Shark {
+  kind: "Shark";
+  age: number;
+  region: string;
+}
+
+type Fish = Goldfish | Shark;
+
+function sharkOrFish(fish: Fish): void {
+  if (fish.kind === "Goldfish") {
+    console.log(fish.bowl); // Ok, because fish will be a Goldfish type here.
+    console.log(`I'm a goldfish and live in bowl!`);
+  } else {
+    console.log(`I'm a shark and live in the ocean!`);
+  }
+}
+
+// Never
+
+function isAFish(fish: Fish): void {
+  switch(fish.kind) {
+    case 'Shark':
+      console.log('I am a shark!');
+      break;
+    case 'Goldfish':
+      console.log('I am a goldfish!');
+      break;
+    default:
+      const _shouldNeverReach: never = fish;
+      return _shouldNeverReach;
+  }
+}
