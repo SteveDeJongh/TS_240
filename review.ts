@@ -132,3 +132,78 @@ function handleValue(arg: unknown):string {
 	let workingArg = arg as Value; // type assertion to assign `arg` to `workingArg` and treat it as a `Value` type.
 	return workingArg.name;
 }
+
+// Type intersections
+
+type A = {
+  name: string;
+}
+
+type B = {
+  id: number;
+}
+
+type C = A & B;
+
+// Type intersections with same property name.
+
+type D = {
+  id: string;
+}
+
+type F = B & D;
+
+let f: F = {id: '1'}; // Type 'string' is not assignable to type 'never';
+
+// Interfaces
+
+interface Boat {
+	model: string;
+	year: number;
+}
+
+// Extending an interface
+
+interface Watercraft {
+	model: string;
+	year: number;
+}
+
+interface JetSki extends Watercraft {
+	kind: 'Jetski';
+}
+
+let jetSki: JetSki = {
+	kind: 'Jetski',
+	model: 'Seadoo',
+	year: 2020,
+}
+
+// Extending an interface with same property name.
+
+interface Person {
+  id: string;
+  name: string;
+}
+
+interface Employee extends Person {
+  id: number; // Error is raised if Person `id: string`;. `Person` must include `number` as a valid type for `id`, or change Employee `id` to type `string`.
+  job: string;
+}
+
+// Structural Typing
+
+type twoWheeler = {
+	make: string;
+}
+
+type Bike = {
+	make: string;
+	model: string;
+}
+
+let kona: Bike = {make: 'Kona', model: 'Process'};
+let vehicle: twoWheeler = kona; // works just fine.
+
+console.log(vehicle.make); // logs 'Kona';
+// console.log(vehicle.model); // raises a TypeErrorl `model` does not exist on type `twoWheeler`;
