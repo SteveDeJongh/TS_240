@@ -79,7 +79,6 @@ function handleValue(arg) {
     var workingArg = arg; // type assertion to assign `arg` to `workingArg` and treat it as a `Value` type.
     return workingArg.name;
 }
-var f = { id: '1' }; // Type 'string' is not assignable to type 'never';
 var jetSki = {
     kind: 'Jetski',
     model: 'Seadoo',
@@ -116,7 +115,7 @@ function example3(arg) {
 // IN
 function defineClothing(piece) {
     console.log("The piece is ".concat(piece.color));
-    console.log("The pants are ".concat(piece.length, " long.")); // raises an error as `length` is not available on all types within the `Clothing` type.
+    // console.log(`The pants are ${piece.length} long.`); // raises an error as `length` is not available on all types within the `Clothing` type.
     if ('length' in piece) {
         console.log("The pants are ".concat(piece.length, " long.")); // works.
     }
@@ -173,7 +172,7 @@ function prefixValues(prefix) {
     return values.map(function (val) { return prefix + ' ' + val; }).join(', ');
 }
 var input = ['Hello', 'steve', 'tom', 'gerald'];
-console.log(prefixValues.apply(void 0, input)); // 
+console.log(prefixValues.apply(void 0, input)); // 'Hello steve, Hello tom, Hello gerald
 function createFish(name, species) {
     return { name: name, species: species };
 }
@@ -183,3 +182,20 @@ function updateTodo(todo, updates) {
 }
 var readOnly = { name: 'read only string' };
 var required = { name: 'Required string', desc: 'required desc' };
+// Generics
+function firstVal(arr) {
+    return arr[0];
+}
+// Extending an object, ensuring a property exists in the passed in object.
+function howOldAreYou(person) {
+    console.log("This person is ".concat(person.age, " years old."));
+}
+var person = { name: 'steve', age: 22 };
+howOldAreYou(person); // Variable `person` has an `age` property witha  type number;
+var invalidPerson = { name: 'ralf' };
+var aType = { name: 'hello', age: 22, gender: 'wee', alive: true };
+var test = 'name'; // the string `name` is a key of `someType`.
+// typeof
+console.log(typeof "Hello World"); // string
+var newObj = { name: 'steve', age: 30 };
+console.log(typeof newObj); //

@@ -1,5 +1,12 @@
 // TS 249 - Review
 
+// Complex Types
+
+let array: Array<string> = ['hello'];
+let altArr: string[] = ['hello'];
+
+let tuple: [string, string, number] = ['Tuples have a fixed', 'length arangement', 100];
+
 // Special Types
 
 // Any
@@ -153,7 +160,7 @@ type D = {
 
 type F = B & D;
 
-let f: F = {id: '1'}; // Type 'string' is not assignable to type 'never';
+// let f: F = {id: '1'}; // Type 'string' is not assignable to type 'never';
 
 // Interfaces
 
@@ -186,10 +193,10 @@ interface Person {
   name: string;
 }
 
-interface Employee extends Person {
-  id: number; // Error is raised if Person `id: string`;. `Person` must include `number` as a valid type for `id`, or change Employee `id` to type `string`.
-  job: string;
-}
+// interface Employee extends Person {
+//   id: number; // Error is raised if Person `id: string`;. `Person` must include `number` as a valid type for `id`, or change Employee `id` to type `string`.
+//   job: string;
+// }
 
 // Structural Typing
 
@@ -253,7 +260,7 @@ function example3(arg: string | number) {
 
 function defineClothing(piece: Clothing):void {
   console.log(`The piece is ${piece.color}`);
-  console.log(`The pants are ${piece.length} long.`); // raises an error as `length` is not available on all types within the `Clothing` type.
+  // console.log(`The pants are ${piece.length} long.`); // raises an error as `length` is not available on all types within the `Clothing` type.
   if ('length' in piece) {
     console.log(`The pants are ${piece.length} long.`); // works.
   }
@@ -350,6 +357,15 @@ interface Account {
 
 // Pick and Omit
 
+interface User {
+	name: string;
+	email: string;
+	age: number;
+}
+
+type NameOnly = Pick<User, "name">; // {name: string;}
+type EmailandAge = Pick<User, "email" | "age">; // {email: string; age: number;}
+
 // Parameters
 
 type functionType = (a: string, b: number) => number;
@@ -397,3 +413,80 @@ type Todo = { name: string; desc?: string; };
 
 let readOnly: Readonly<Todo> = {name: 'read only string'};
 let required: Required<Todo> = {name: 'Required string', desc: 'required desc'};
+
+// Generics
+
+function firstVal<T>(arr: T[]):T { // Here, T is the type parameter with the <generic>
+	return arr[0];
+}
+
+type User5<T> = {
+	name: string;
+  age: T; // An object with a type `User` can assign any type to the `age` property.
+}
+
+let user:User5<string> = {
+	name: 'steve',
+	age: '30',
+}
+
+let user2: User5<number> = {
+  name: 'steve',
+  age: '30'; // Error is raised, we've specified this should be a number.
+}
+
+// Extending an object, ensuring a property exists in the passed in object.
+function howOldAreYou<T extends {age: number}>(person: T):void {
+	console.log(`This person is ${person.age} years old.`);
+}
+
+let person = {name: 'steve', age: 22};
+howOldAreYou(person); // Variable `person` has an `age` property witha  type number;
+let invalidPerson = {name: 'ralf'};
+// howOldAreYou(invalidPerson); // Error is raised as invalidPerson is missing `age` property.
+
+// Operators
+
+// keyof operator
+
+type someType = {name: string; age: number; gender: string; alive: boolean;};
+type someTypeKeyOf = keyof someType;
+
+let aType: someType = {name: 'hello', age: 22, gender: 'wee', alive: true};
+let test: someTypeKeyOf = 'name'; // the string `name` is a key of `someType`.
+
+// typeof
+
+console.log(typeof "Hello World"); // string
+
+type newType = {name: string; age: number;}
+let newObj: newType = {name: 'steve', age: 30};
+
+console.log(typeof newObj); // object
+
+// Updating or Extending
+
+type Person1 = {
+	name: string;
+}
+
+type Employee1 = Person1 & {
+	id: number;
+}
+
+// assigning another property to Employee
+// type Employee1 = {jobTitle: string;};
+
+interface Person2 {
+  name: string;
+}
+
+interface Employee2 extends Person2 {
+	id: number;
+}
+
+interface Employee2 {
+  jobTitle: string;
+}
+
+let emp: Employee2 = {name: 'steve', id: 2, jobTitle: 'sales'}; // interface now includes properties of Person2 and additional `jobTitle` prop.
