@@ -7,6 +7,8 @@ let altArr: string[] = ['hello'];
 
 let tuple: [string, string, number] = ['Tuples have a fixed', 'length arangement', 100];
 
+let literal: 'literal1' | 'literal2' = 'literal1';
+
 // Special Types
 
 // Any
@@ -490,3 +492,37 @@ interface Employee2 {
 }
 
 let emp: Employee2 = {name: 'steve', id: 2, jobTitle: 'sales'}; // interface now includes properties of Person2 and additional `jobTitle` prop.
+
+// Type unions and intersections
+
+type hasName = { name: string };
+type hasAge = { age: number };
+
+let firstName: hasName = { name: 'steve'};
+let firstAge: hasAge = { age: 23 };
+
+type hasBothOr = hasName | hasAge;
+
+let bothA: hasBothOr = {name: 'steve'}; // valid
+let bothB: hasBothOr = {name: 'steve', age: 12}; // valid
+let bothC: hasBothOr = {age: 23}; // valid
+
+type hasBothAnd = hasName & hasAge;
+let bothD: hasBothAnd = {name: 'steve'}; // invalid
+let bothE: hasBothAnd = {name: 'steve', age: 12}; // valid
+let bothF: hasBothAnd = {age: 23}; // invalid
+
+type Cat = {name: string;}
+type Lion = {name: string; age: number};
+
+type Animal = Cat | Lion;
+
+let animalA: Animal = {name: 'john', age: 22}; // valid
+let animalC: Animal = {name: 'john'}; // valid
+
+type AnimalIntersection = Cat & Lion;
+let animalB: AnimalIntersection = {name: 'steve'}; // invalid, requires `age` property.
+
+
+// Unions: the set of values that can be assigned to either of the object types.
+// Intersections: the set of values that can be assigned to both a and b simultaneously.
