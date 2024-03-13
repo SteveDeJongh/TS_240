@@ -1,5 +1,39 @@
 // TS 249 - Review
 
+// The Difference between Build Time and Runtime
+
+// Build Time is teh time when we run the typescript compiler which turns our TS code into JS code. It's at this point that any TypeErrors are raised. Ragardless of if any errors are raised, the compiler will still output a JS file.
+// Run time is when we execute the JS file.
+
+// Type Annotations
+
+let stringTyped: string;
+function typgingParams(param1: string) {
+	//...
+}
+
+function typingReturnValue(param): string {
+  return "blah";
+}
+
+type ObjectType = {
+	name: string;
+	age: number;
+}
+
+let objectTyping: ObjectType = {
+	name: 'steve',
+	age: 30,
+}
+
+let typedArray: Array<number>;
+// OR
+let altTypedArray: string[];
+
+// Primitive Types
+
+// Primitives are `string`, `number`, `boolean`, `bigint`, `symbol`, `null` and `undefined`.
+
 // Complex Types
 
 let array: Array<string> = ['hello'];
@@ -201,6 +235,27 @@ interface Person {
 // }
 
 // Structural Typing
+
+type Option1 = {
+	name: string;
+	age: number;
+}
+
+type Option2 = {
+	name: string;
+	age: number;
+}
+
+function explainOption(arg: Option1): string {
+	return `${arg.name} is ${arg.age} years old.`
+}
+
+let n: Option2 = {
+	name: 'steve',
+	age: 30,
+}
+
+console.log(explainOption(n)); // Works, type `Option2` is the same shape as `Option1`.
 
 type twoWheeler = {
 	make: string;
