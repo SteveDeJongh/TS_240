@@ -10,6 +10,44 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+// The Difference between Build Time and Runtime
+// Build Time is teh time when we run the typescript compiler which turns our TS code into JS code. It's at this point that any TypeErrors are raised. Ragardless of if any errors are raised, the compiler will still output a JS file.
+// Run time is when we execute the JS file.
+// Type Annotations
+var stringTyped;
+function typgingParams(param1) {
+    //...
+}
+function typingReturnValue(param) {
+    return "blah";
+}
+var objectTyping = {
+    name: 'steve',
+    age: 30,
+};
+var typedArray;
+// OR
+var altTypedArray;
+// Primitive Types
+// Primitives are `string`, `number`, `boolean`, `bigint`, `symbol`, `null` and `undefined`.
+// Complex Types
+var array = ['hello'];
+var altArr = ['hello'];
+var tuple = ['Tuples have a fixed', 'length arangement', 100];
+var literal = 'literal1';
+// Typing Parameters
+function functionName(param, param2) {
+    return "".concat(param, " ").concat(param2);
+}
+function defaultAndOptionalParam(def, param) {
+    if (def === void 0) { def = 'some String value'; }
+    console.log(def.toUpperCase());
+    if (param) {
+        console.log(param.toLocaleUpperCase()); // param will be a string here.
+    }
+    return "Some string";
+}
+defaultAndOptionalParam('first arg', 'second arg');
 // Special Types
 // Any
 var val = 'steve'; // works
@@ -56,6 +94,11 @@ function shapeInfoTypePredicate(shape) {
     }
     return text;
 }
+var s = 'ssss';
+// let b: string = s;
+if (typeof s === 'string') {
+    b = s;
+}
 function describeVehicle(vehicle) {
     switch (vehicle.kind) {
         case 'Car':
@@ -79,11 +122,23 @@ function handleValue(arg) {
     var workingArg = arg; // type assertion to assign `arg` to `workingArg` and treat it as a `Value` type.
     return workingArg.name;
 }
+var cObj = {
+    name: 'steve',
+    id: 2,
+};
 var jetSki = {
     kind: 'Jetski',
     model: 'Seadoo',
     year: 2020,
 };
+function explainOption(arg) {
+    return "".concat(arg.name, " is ").concat(arg.age, " years old.");
+}
+var n = {
+    name: 'steve',
+    age: 30,
+};
+console.log(explainOption(n)); // Works, type `Option2` is the same shape as `Option1`.
 var kona = { make: 'Kona', model: 'Process' };
 var vehicle = kona; // works just fine.
 console.log(vehicle.make); // logs 'Kona';
@@ -162,6 +217,15 @@ function isAFish(fish) {
             return _shouldNeverReach;
     }
 }
+var person2 = { age: '30', }; // works
+var account1 = {
+    accountId: 2,
+    name: 'checking',
+}; // works
+var account2 = {
+    accountId: 2,
+    2: 'checking',
+};
 var fromParamsCall = ['string', 1];
 // With Rest parameter
 function prefixValues(prefix) {
@@ -186,6 +250,14 @@ var required = { name: 'Required string', desc: 'required desc' };
 function firstVal(arr) {
     return arr[0];
 }
+var user = {
+    name: 'steve',
+    age: '30',
+};
+var user2 = {
+    name: 'steve',
+    age: '30'
+};
 // Extending an object, ensuring a property exists in the passed in object.
 function howOldAreYou(person) {
     console.log("This person is ".concat(person.age, " years old."));
@@ -198,4 +270,25 @@ var test = 'name'; // the string `name` is a key of `someType`.
 // typeof
 console.log(typeof "Hello World"); // string
 var newObj = { name: 'steve', age: 30 };
-console.log(typeof newObj); //
+console.log(typeof newObj); // object
+var emp = { name: 'steve', id: 2, jobTitle: 'sales' }; // interface now includes properties of Person2 and additional `jobTitle` prop.
+var firstName = { name: 'steve' };
+var firstAge = { age: 23 };
+var bothA = { name: 'steve' }; // valid
+var bothB = { name: 'steve', age: 12 }; // valid
+var bothC = { age: 23 }; // valid
+var bothD = { name: 'steve' }; // invalid
+var bothE = { name: 'steve', age: 12 }; // valid
+var bothF = { age: 23 }; // invalid
+var animalA = { name: 'john', age: 22 }; // valid
+var animalC = { name: 'john' }; // valid
+var animalB = { name: 'steve' }; // invalid, requires `age` property.
+var jkl = { name: 'steve', age: 2 };
+var sObj = { name: 'steve', age: 2 };
+function handlePet(pet) {
+    console.log("".concat(pet.whiskerLength)); // Not accessible, `pet` is typed to both Dog and Cat and is too wide.
+    if ('whiskerLength' in pet) {
+        console.log("".concat(pet.whiskerLength)); // works just fine, only a Cat2 type cna be here.
+    }
+    console.log(pet.age, pet.breed);
+}

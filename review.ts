@@ -5,7 +5,26 @@
 // Build Time is teh time when we run the typescript compiler which turns our TS code into JS code. It's at this point that any TypeErrors are raised. Ragardless of if any errors are raised, the compiler will still output a JS file.
 // Run time is when we execute the JS file.
 
-// Type Annotations
+////////////////////////////////// Operators //////////////////////////////////
+
+// keyof operator
+
+type someType = {name: string; age: number; gender: string; alive: boolean;};
+type someTypeKeyOf = keyof someType;
+
+let aType: someType = {name: 'hello', age: 22, gender: 'wee', alive: true};
+let test: someTypeKeyOf = 'name'; // the string `name` is a key of `someType`.
+
+// typeof
+
+console.log(typeof "Hello World"); // string
+
+type newType = {name: string; age: number;}
+let newObj: newType = {name: 'steve', age: 30};
+
+console.log(typeof newObj); // object
+
+////////////////////////////////// Type Annotations //////////////////////////////////
 
 let stringTyped: string;
 function typgingParams(param1: string) {
@@ -30,22 +49,52 @@ let typedArray: Array<number>;
 // OR
 let altTypedArray: string[];
 
-// Primitive Types
+////////////////////////////////// Primitive Types //////////////////////////////////
 
-// Primitives are `string`, `number`, `boolean`, `bigint`, `symbol`, `null` and `undefined`.
+// Primitives:
+// `string`, `number`, `boolean`, `bigint`, `symbol`, `null` and `undefined`.
 
 // Complex Types
 
 let array: Array<string> = ['hello'];
 let altArr: string[] = ['hello'];
-
 let tuple: [string, string, number] = ['Tuples have a fixed', 'length arangement', 100];
-
 let literal: 'literal1' | 'literal2' = 'literal1';
 
-// Special Types
+////////////////////////////////// Typing an objects properties //////////////////////////////////
 
-// Any
+type Car = {
+	make: string;
+	year: number;
+}
+
+let newCar: Car = {
+	make: 'mazda',
+	year: 2023,
+}
+
+// Using interfaces
+
+interface Car {
+	make: string;
+	year: number;
+}
+
+// readonly and optional properties
+
+type Car = {
+	make?: string; // Optional Prop
+	readonly year: number; // Read only prop, once initialized it can not be changed.
+}
+
+interface Car {
+	make?: string;
+	readonly year: number;
+}
+
+////////////////////////////////// Special Types //////////////////////////////////
+
+////////////////////////////////// Any
 
 let val: any = 'steve'; // works
 val = true; // works
@@ -57,7 +106,7 @@ if (typeof val === 'string') {
   console.log(`Val is the number ${val}`) // this will run
 }
 
-// Unknown
+////////////////////////////////// Unknown
 
 let simple: unknown = "I'll be a string";
 
@@ -116,7 +165,7 @@ if (typeof s === 'string') {
   b = s;
 }
 
-// Never
+////////////////////////////////// Never
 
 type Car = {
   kind: 'Car';
@@ -168,7 +217,100 @@ function describeVehicle(vehicle: Vehicle):void {
   }
 }
 
-// Type Assertions
+//////////////////////////////// Typing Parameters and Return Values ////////////////////////////////
+
+function functionName(param: string, param2: number):string { // paramters are typed, and we type the return value after the parameter list.
+	return `${param} ${param2}`;
+}
+
+function defaultAndOptionalParam(def:string = 'some String value', param?: string ):string {
+  console.log(def.toUpperCase());
+  if (param) {
+    console.log(param.toLocaleUpperCase()); // param will be a string here.
+  }
+	return "Some string";
+}
+
+defaultAndOptionalParam('first arg', 'second arg'); // FIRST ARG
+// SECOND ARG
+
+//////////////////////////////// Structural Typing ////////////////////////////////
+
+type Option1 = {
+	name: string;
+	age: number;
+}
+
+type Option2 = {
+	name: string;
+	age: number;
+}
+
+function explainOption(arg: Option1): string {
+	return `${arg.name} is ${arg.age} years old.`
+}
+
+let n: Option2 = {
+	name: 'steve',
+	age: 30,
+}
+
+console.log(explainOption(n)); // Works, type `Option2` is the same shape as `Option1`.
+
+type twoWheeler = {
+	make: string;
+}
+
+type Bike = {
+	make: string;
+	model: string;
+}
+
+let kona: Bike = {make: 'Kona', model: 'Process'};
+let vehicle: twoWheeler = kona; // works just fine.
+
+console.log(vehicle.make); // logs 'Kona';
+// console.log(vehicle.model); // raises a TypeErrorl `model` does not exist on type `twoWheeler`;
+
+// let vehicle2: twoWheeler = {make: 'Kona', model: 'Process'}; // raises an error, for `model` prop.
+
+//////////////////////////////// Interfaces ////////////////////////////////
+
+interface Boat {
+	model: string;
+	year: number;
+}
+
+// Extending an interface
+
+interface Watercraft {
+	model: string;
+	year: number;
+}
+
+interface JetSki extends Watercraft {
+	kind: 'Jetski';
+}
+
+let jetSki: JetSki = {
+	kind: 'Jetski',
+	model: 'Seadoo',
+	year: 2020,
+}
+
+// Extending an interface with same property name.
+
+interface Person {
+  id: string;
+  name: string;
+}
+
+// interface Employee extends Person {
+//   id: number; // Error is raised if Person `id: string`;. `Person` must include `number` as a valid type for `id`, or change Employee `id` to type `string`.
+//   job: string;
+// }
+
+////////////////////////////////// Type Assertions ////////////////////////////////
 
 type Value = {
 	name: string;
@@ -211,89 +353,29 @@ type F = B & D;
 
 // let f: F = {id: '1'}; // Type 'string' is not assignable to type 'never';
 
-// Interfaces
-
-interface Boat {
-	model: string;
-	year: number;
-}
-
-// Extending an interface
-
-interface Watercraft {
-	model: string;
-	year: number;
-}
-
-interface JetSki extends Watercraft {
-	kind: 'Jetski';
-}
-
-let jetSki: JetSki = {
-	kind: 'Jetski',
-	model: 'Seadoo',
-	year: 2020,
-}
-
-// Extending an interface with same property name.
-
-interface Person {
-  id: string;
-  name: string;
-}
-
-// interface Employee extends Person {
-//   id: number; // Error is raised if Person `id: string`;. `Person` must include `number` as a valid type for `id`, or change Employee `id` to type `string`.
-//   job: string;
-// }
-
-// Structural Typing
-
-type Option1 = {
-	name: string;
-	age: number;
-}
-
-type Option2 = {
-	name: string;
-	age: number;
-}
-
-function explainOption(arg: Option1): string {
-	return `${arg.name} is ${arg.age} years old.`
-}
-
-let n: Option2 = {
-	name: 'steve',
-	age: 30,
-}
-
-console.log(explainOption(n)); // Works, type `Option2` is the same shape as `Option1`.
-
-type twoWheeler = {
-	make: string;
-}
-
-type Bike = {
-	make: string;
-	model: string;
-}
-
-let kona: Bike = {make: 'Kona', model: 'Process'};
-let vehicle: twoWheeler = kona; // works just fine.
-
-console.log(vehicle.make); // logs 'Kona';
-// console.log(vehicle.model); // raises a TypeErrorl `model` does not exist on type `twoWheeler`;
-
-// let vehicle2: twoWheeler = {make: 'Kona', model: 'Process'}; // raises an error, for `model` prop.
-
-// Type widening and narrowing
+//////////////////////////////// Type widening and narrowing ////////////////////////////////
 
 // Widening
 
 type Union = string | number;
 
-// Narrowing
+// Widening using a union of objects
+
+type Dog2 = { breed: string; age: number };
+type Cat2 = { breed: string; age: number; whiskerLength: number };
+
+type Pet2 = Dog2 | Cat2;
+
+function handlePet(pet: Pet2):void {
+	console.log(`${pet.whiskerLength}`)// Not accessible, `pet` is typed to both Dog and Cat and is too wide.
+  if ('whiskerLength' in pet) {
+    console.log(`${pet.whiskerLength}`) // works just fine, only a Cat2 type cna be here.
+  }
+
+  console.log(pet.age, pet.breed)
+}
+
+//////////////////////////////// Narrowing ////////////////////////////////
 
 type Shirts = { color: string; size: string; }
 type Pants = { color: string; size: string; length: number; }
@@ -409,7 +491,7 @@ function isAFish(fish: Fish): void {
   }
 }
 
-// Index Signatures
+//////////////////////////////// Index Signatures ////////////////////////////////
 
 interface People {
   [name: string]: string;
@@ -439,7 +521,7 @@ let account2: Account = {
   2: 'checking',
 }
 
-// Utility Types
+//////////////////////////////// Utility Types ////////////////////////////////
 
 // Pick and Omit
 
@@ -452,6 +534,13 @@ interface User {
 type NameOnly = Pick<User, "name">; // {name: string;}
 type EmailandAge = Pick<User, "email" | "age">; // {email: string; age: number;}
 
+type UserOmit = {
+  name: string;
+  email: string;
+  age: number;
+}
+
+type UserOmitNoEmail = Omit<UserOmit, 'email'>; // {name: string; age: number;}
 // Parameters
 
 type functionType = (a: string, b: number) => number;
@@ -500,7 +589,7 @@ type Todo = { name: string; desc?: string; };
 let readOnly: Readonly<Todo> = {name: 'read only string'};
 let required: Required<Todo> = {name: 'Required string', desc: 'required desc'};
 
-// Generics
+//////////////////////////////// Generics ////////////////////////////////
 
 function firstVal<T>(arr: T[]):T { // Here, T is the type parameter with the <generic>
 	return arr[0];
@@ -531,26 +620,7 @@ howOldAreYou(person); // Variable `person` has an `age` property witha  type num
 let invalidPerson = {name: 'ralf'};
 // howOldAreYou(invalidPerson); // Error is raised as invalidPerson is missing `age` property.
 
-// Operators
-
-// keyof operator
-
-type someType = {name: string; age: number; gender: string; alive: boolean;};
-type someTypeKeyOf = keyof someType;
-
-let aType: someType = {name: 'hello', age: 22, gender: 'wee', alive: true};
-let test: someTypeKeyOf = 'name'; // the string `name` is a key of `someType`.
-
-// typeof
-
-console.log(typeof "Hello World"); // string
-
-type newType = {name: string; age: number;}
-let newObj: newType = {name: 'steve', age: 30};
-
-console.log(typeof newObj); // object
-
-// Updating or Extending
+//////////////////////////////// Updating or Extending ////////////////////////////////
 
 type Person1 = {
 	name: string;
@@ -634,18 +704,3 @@ interface S {
 let sObj: S = {name: 'steve', age: 2};
 
 //
-
-type Dog2 = { breed: string; age: number };
-type Cat2 = { breed: string; age: number; whiskerLength: number };
-
-type Pet2 = Dog2 | Cat2;
-
-function handlePet(pet: Pet2):void {
-	console.log(`${pet.whiskerLength}`)// Not accessible, `pet` is typed to both Dog and Cat and is too wide.
-  if ('whiskerLength' in pet) {
-    console.log(`${pet.whiskerLength}`) // works just fine, only a Cat2 type cna be here.
-  }
-
-  console.log(pet.age, pet.breed)
-}
-
