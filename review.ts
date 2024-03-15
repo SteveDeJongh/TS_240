@@ -108,6 +108,14 @@ function shapeInfoTypePredicate(shape: unknown): string {
   return text;
 }
 
+let s: unknown = 'ssss';
+
+// let b: string = s;
+
+if (typeof s === 'string') {
+  b = s;
+}
+
 // Never
 
 type Car = {
@@ -187,6 +195,11 @@ type B = {
 }
 
 type C = A & B;
+
+let cObj: C = {
+  name: 'steve',
+  id: 2,
+}
 
 // Type intersections with same property name.
 
@@ -271,6 +284,8 @@ let vehicle: twoWheeler = kona; // works just fine.
 
 console.log(vehicle.make); // logs 'Kona';
 // console.log(vehicle.model); // raises a TypeErrorl `model` does not exist on type `twoWheeler`;
+
+// let vehicle2: twoWheeler = {make: 'Kona', model: 'Process'}; // raises an error, for `model` prop.
 
 // Type widening and narrowing
 
@@ -400,6 +415,10 @@ interface People {
   [name: string]: string;
 }
 
+let person2: People = { age: '30', } // works
+// let person3: People = {year: 2000,} // doesn't work, value must be a string.
+// let person3: People = { 2: 22}; // doesn't work, key must be of type string.
+
 // interface Account {
 //   [name: string]: string;
 //   accountId: number; // raises an error.
@@ -408,6 +427,16 @@ interface People {
 interface Account {
   [name: string]: string | number;
   accountId: number; // works.
+}
+
+let account1: Account = {
+  accountId: 2,
+  name: 'checking',
+} // works
+
+let account2: Account = {
+  accountId: 2,
+  2: 'checking',
 }
 
 // Utility Types
@@ -581,3 +610,42 @@ let animalB: AnimalIntersection = {name: 'steve'}; // invalid, requires `age` pr
 
 // Unions: the set of values that can be assigned to either of the object types.
 // Intersections: the set of values that can be assigned to both a and b simultaneously.
+
+interface J {
+  name: string;
+}
+
+interface K {
+  age: number;
+}
+
+interface L extends J, K {}
+
+let jkl: L = {name: 'steve', age: 2};
+
+interface S {
+  name: string;
+}
+
+interface S {
+  age: number;
+}
+
+let sObj: S = {name: 'steve', age: 2};
+
+//
+
+type Dog2 = { breed: string; age: number };
+type Cat2 = { breed: string; age: number; whiskerLength: number };
+
+type Pet2 = Dog2 | Cat2;
+
+function handlePet(pet: Pet2):void {
+	console.log(`${pet.whiskerLength}`)// Not accessible, `pet` is typed to both Dog and Cat and is too wide.
+  if ('whiskerLength' in pet) {
+    console.log(`${pet.whiskerLength}`) // works just fine, only a Cat2 type cna be here.
+  }
+
+  console.log(pet.age, pet.breed)
+}
+
