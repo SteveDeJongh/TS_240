@@ -63,31 +63,31 @@ let literal: 'literal1' | 'literal2' = 'literal1';
 
 ////////////////////////////////// Typing an objects properties //////////////////////////////////
 
-type Car = {
+type Car1 = {
 	make: string;
 	year: number;
 }
 
-let newCar: Car = {
+let newCar: Car1= {
 	make: 'mazda',
 	year: 2023,
 }
 
 // Using interfaces
 
-interface Car {
+interface Car2 {
 	make: string;
 	year: number;
 }
 
 // readonly and optional properties
 
-type Car = {
+type Car3 = {
 	make?: string; // Optional Prop
 	readonly year: number; // Read only prop, once initialized it can not be changed.
 }
 
-interface Car {
+interface Car4 {
 	make?: string;
 	readonly year: number;
 }
@@ -106,7 +106,7 @@ if (typeof val === 'string') {
   console.log(`Val is the number ${val}`) // this will run
 }
 
-////////////////////////////////// Unknown
+////////////////////////////////// Unknown 
 
 let simple: unknown = "I'll be a string";
 
@@ -159,10 +159,11 @@ function shapeInfoTypePredicate(shape: unknown): string {
 
 let s: unknown = 'ssss';
 
-// let b: string = s;
+// let b: string = s; // Can not assign type unkown to type string.
+let c: string;
 
 if (typeof s === 'string') {
-  b = s;
+  c = s;
 }
 
 ////////////////////////////////// Never
@@ -367,7 +368,7 @@ type Cat2 = { breed: string; age: number; whiskerLength: number };
 type Pet2 = Dog2 | Cat2;
 
 function handlePet(pet: Pet2):void {
-	console.log(`${pet.whiskerLength}`)// Not accessible, `pet` is typed to both Dog and Cat and is too wide.
+	// console.log(`${pet.whiskerLength}`)// Not accessible, `pet` is typed to both Dog and Cat and is too wide.
   if ('whiskerLength' in pet) {
     console.log(`${pet.whiskerLength}`) // works just fine, only a Cat2 type cna be here.
   }
@@ -607,7 +608,8 @@ let user:User5<string> = {
 
 let user2: User5<number> = {
   name: 'steve',
-  age: '30'; // Error is raised, we've specified this should be a number.
+  // age: '30'; // Error is raised, we've specified this should be a number.
+  age: 30,
 }
 
 // Extending an object, ensuring a property exists in the passed in object.
@@ -662,9 +664,9 @@ let bothB: hasBothOr = {name: 'steve', age: 12}; // valid
 let bothC: hasBothOr = {age: 23}; // valid
 
 type hasBothAnd = hasName & hasAge;
-let bothD: hasBothAnd = {name: 'steve'}; // invalid
+// let bothD: hasBothAnd = {name: 'steve'}; // invalid
 let bothE: hasBothAnd = {name: 'steve', age: 12}; // valid
-let bothF: hasBothAnd = {age: 23}; // invalid
+// let bothF: hasBothAnd = {age: 23}; // invalid
 
 type Cat = {name: string;}
 type Lion = {name: string; age: number};
@@ -675,7 +677,7 @@ let animalA: Animal = {name: 'john', age: 22}; // valid
 let animalC: Animal = {name: 'john'}; // valid
 
 type AnimalIntersection = Cat & Lion;
-let animalB: AnimalIntersection = {name: 'steve'}; // invalid, requires `age` property.
+// let animalB: AnimalIntersection = {name: 'steve'}; // invalid, requires `age` property.
 
 
 // Unions: the set of values that can be assigned to either of the object types.

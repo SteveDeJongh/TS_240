@@ -10,10 +10,13 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-// The Difference between Build Time and Runtime
-// Build Time is teh time when we run the typescript compiler which turns our TS code into JS code. It's at this point that any TypeErrors are raised. Ragardless of if any errors are raised, the compiler will still output a JS file.
-// Run time is when we execute the JS file.
-// Type Annotations
+var aType = { name: 'hello', age: 22, gender: 'wee', alive: true };
+var test = 'name'; // the string `name` is a key of `someType`.
+// typeof
+console.log(typeof "Hello World"); // string
+var newObj = { name: 'steve', age: 30 };
+console.log(typeof newObj); // object
+////////////////////////////////// Type Annotations //////////////////////////////////
 var stringTyped;
 function typgingParams(param1) {
     //...
@@ -28,28 +31,20 @@ var objectTyping = {
 var typedArray;
 // OR
 var altTypedArray;
-// Primitive Types
-// Primitives are `string`, `number`, `boolean`, `bigint`, `symbol`, `null` and `undefined`.
+////////////////////////////////// Primitive Types //////////////////////////////////
+// Primitives:
+// `string`, `number`, `boolean`, `bigint`, `symbol`, `null` and `undefined`.
 // Complex Types
 var array = ['hello'];
 var altArr = ['hello'];
 var tuple = ['Tuples have a fixed', 'length arangement', 100];
 var literal = 'literal1';
-// Typing Parameters
-function functionName(param, param2) {
-    return "".concat(param, " ").concat(param2);
-}
-function defaultAndOptionalParam(def, param) {
-    if (def === void 0) { def = 'some String value'; }
-    console.log(def.toUpperCase());
-    if (param) {
-        console.log(param.toLocaleUpperCase()); // param will be a string here.
-    }
-    return "Some string";
-}
-defaultAndOptionalParam('first arg', 'second arg');
-// Special Types
-// Any
+var newCar = {
+    make: 'mazda',
+    year: 2023,
+};
+////////////////////////////////// Special Types //////////////////////////////////
+////////////////////////////////// Any
 var val = 'steve'; // works
 val = true; // works
 val = 12; // also works.
@@ -59,7 +54,7 @@ if (typeof val === 'string') {
 else if (typeof val === 'number') {
     console.log("Val is the number ".concat(val)); // this will run
 }
-// Unknown
+////////////////////////////////// Unknown 
 var simple = "I'll be a string";
 if (typeof simple === 'string') {
     console.log('simple is a string');
@@ -95,9 +90,10 @@ function shapeInfoTypePredicate(shape) {
     return text;
 }
 var s = 'ssss';
-// let b: string = s;
+// let b: string = s; // Can not assign type unkown to type string.
+var c;
 if (typeof s === 'string') {
-    b = s;
+    c = s;
 }
 function describeVehicle(vehicle) {
     switch (vehicle.kind) {
@@ -115,22 +111,19 @@ function describeVehicle(vehicle) {
             throw new Error("Invalid vehicle: ".concat(JSON.stringify(_exhaustiveCheck)));
     }
 }
-function handleValue(arg) {
-    if (!arg || typeof arg !== 'object') {
-        return "Invalid arg";
-    }
-    var workingArg = arg; // type assertion to assign `arg` to `workingArg` and treat it as a `Value` type.
-    return workingArg.name;
+//////////////////////////////// Typing Parameters and Return Values ////////////////////////////////
+function functionName(param, param2) {
+    return "".concat(param, " ").concat(param2);
 }
-var cObj = {
-    name: 'steve',
-    id: 2,
-};
-var jetSki = {
-    kind: 'Jetski',
-    model: 'Seadoo',
-    year: 2020,
-};
+function defaultAndOptionalParam(def, param) {
+    if (def === void 0) { def = 'some String value'; }
+    console.log(def.toUpperCase());
+    if (param) {
+        console.log(param.toLocaleUpperCase()); // param will be a string here.
+    }
+    return "Some string";
+}
+defaultAndOptionalParam('first arg', 'second arg'); // FIRST ARG
 function explainOption(arg) {
     return "".concat(arg.name, " is ").concat(arg.age, " years old.");
 }
@@ -142,6 +135,29 @@ console.log(explainOption(n)); // Works, type `Option2` is the same shape as `Op
 var kona = { make: 'Kona', model: 'Process' };
 var vehicle = kona; // works just fine.
 console.log(vehicle.make); // logs 'Kona';
+var jetSki = {
+    kind: 'Jetski',
+    model: 'Seadoo',
+    year: 2020,
+};
+function handleValue(arg) {
+    if (!arg || typeof arg !== 'object') {
+        return "Invalid arg";
+    }
+    var workingArg = arg; // type assertion to assign `arg` to `workingArg` and treat it as a `Value` type.
+    return workingArg.name;
+}
+var cObj = {
+    name: 'steve',
+    id: 2,
+};
+function handlePet(pet) {
+    // console.log(`${pet.whiskerLength}`)// Not accessible, `pet` is typed to both Dog and Cat and is too wide.
+    if ('whiskerLength' in pet) {
+        console.log("".concat(pet.whiskerLength)); // works just fine, only a Cat2 type cna be here.
+    }
+    console.log(pet.age, pet.breed);
+}
 // Equality
 function example(arg1, arg2) {
     if (arg1 === arg2) {
@@ -246,7 +262,7 @@ function updateTodo(todo, updates) {
 }
 var readOnly = { name: 'read only string' };
 var required = { name: 'Required string', desc: 'required desc' };
-// Generics
+//////////////////////////////// Generics ////////////////////////////////
 function firstVal(arr) {
     return arr[0];
 }
@@ -256,7 +272,8 @@ var user = {
 };
 var user2 = {
     name: 'steve',
-    age: '30'
+    // age: '30'; // Error is raised, we've specified this should be a number.
+    age: 30,
 };
 // Extending an object, ensuring a property exists in the passed in object.
 function howOldAreYou(person) {
@@ -265,30 +282,16 @@ function howOldAreYou(person) {
 var person = { name: 'steve', age: 22 };
 howOldAreYou(person); // Variable `person` has an `age` property witha  type number;
 var invalidPerson = { name: 'ralf' };
-var aType = { name: 'hello', age: 22, gender: 'wee', alive: true };
-var test = 'name'; // the string `name` is a key of `someType`.
-// typeof
-console.log(typeof "Hello World"); // string
-var newObj = { name: 'steve', age: 30 };
-console.log(typeof newObj); // object
 var emp = { name: 'steve', id: 2, jobTitle: 'sales' }; // interface now includes properties of Person2 and additional `jobTitle` prop.
 var firstName = { name: 'steve' };
 var firstAge = { age: 23 };
 var bothA = { name: 'steve' }; // valid
 var bothB = { name: 'steve', age: 12 }; // valid
 var bothC = { age: 23 }; // valid
-var bothD = { name: 'steve' }; // invalid
+// let bothD: hasBothAnd = {name: 'steve'}; // invalid
 var bothE = { name: 'steve', age: 12 }; // valid
-var bothF = { age: 23 }; // invalid
 var animalA = { name: 'john', age: 22 }; // valid
 var animalC = { name: 'john' }; // valid
-var animalB = { name: 'steve' }; // invalid, requires `age` property.
 var jkl = { name: 'steve', age: 2 };
 var sObj = { name: 'steve', age: 2 };
-function handlePet(pet) {
-    console.log("".concat(pet.whiskerLength)); // Not accessible, `pet` is typed to both Dog and Cat and is too wide.
-    if ('whiskerLength' in pet) {
-        console.log("".concat(pet.whiskerLength)); // works just fine, only a Cat2 type cna be here.
-    }
-    console.log(pet.age, pet.breed);
-}
+//
