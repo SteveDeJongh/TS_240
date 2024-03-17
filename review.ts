@@ -63,6 +63,11 @@ let literal: 'literal1' | 'literal2' = 'literal1';
 
 ////////////////////////////////// Typing an objects properties //////////////////////////////////
 
+let caroo: {name: string; year: number;} = {
+  name: 'steve',
+  year: 2000,
+}
+
 type Car1 = {
 	make: string;
 	year: number;
@@ -378,10 +383,6 @@ function handlePet(pet: Pet2):void {
 
 //////////////////////////////// Narrowing ////////////////////////////////
 
-type Shirts = { color: string; size: string; }
-type Pants = { color: string; size: string; length: number; }
-type Clothing = Shirts | Pants;
-
 // Equality
 
 function example(arg1: string | number, arg2: string | boolean) {
@@ -412,12 +413,16 @@ function example3(arg: string | number) {
 }
 
 // IN
+type Shirts = { color: string; size: string; }
+type Pants = { color: string; size: string; length: number; }
+type Clothing = Shirts | Pants;
 
 function defineClothing(piece: Clothing):void {
   console.log(`The piece is ${piece.color}`);
-  // console.log(`The pants are ${piece.length} long.`); // raises an error as `length` is not available on all types within the `Clothing` type.
+  // console.log(`The pants are ${piece.length} long.`); // raises an error as `length` is not available on all types within the `Clothing` type, in this case the `Shirts` type.
   if ('length' in piece) {
-    console.log(`The pants are ${piece.length} long.`); // works.
+    console.log(`The pants are ${piece.length} long.`); // works, as we've now ensure that only
+                                                        // a `Pants` type can make it here.
   }
 }
 
@@ -425,6 +430,7 @@ function defineClothing(piece: Clothing):void {
 
 function example4(arg: Date | string) {
   if (arg instanceof Date) {
+    console.log(arg.getMonth) // Works, arg here is a `Date` object.
     // do something with the arg as a date object.
   } else {
     // do something when the arg is a string.
@@ -678,7 +684,6 @@ let animalC: Animal = {name: 'john'}; // valid
 
 type AnimalIntersection = Cat & Lion;
 // let animalB: AnimalIntersection = {name: 'steve'}; // invalid, requires `age` property.
-
 
 // Unions: the set of values that can be assigned to either of the object types.
 // Intersections: the set of values that can be assigned to both a and b simultaneously.
