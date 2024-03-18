@@ -39,6 +39,13 @@ var array = ['hello'];
 var altArr = ['hello'];
 var tuple = ['Tuples have a fixed', 'length arangement', 100];
 var literal = 'literal1';
+var arrrr = [1, 2, 3, 4];
+console.log(arrrr[6]);
+////////////////////////////////// Typing an objects properties //////////////////////////////////
+var caroo = {
+    name: 'steve',
+    year: 2000,
+};
 var newCar = {
     make: 'mazda',
     year: 2023,
@@ -158,6 +165,7 @@ function handlePet(pet) {
     }
     console.log(pet.age, pet.breed);
 }
+//////////////////////////////// Narrowing ////////////////////////////////
 // Equality
 function example(arg1, arg2) {
     if (arg1 === arg2) {
@@ -183,17 +191,18 @@ function example3(arg) {
         // do something with the arg when it's a number;
     }
 }
-// IN
 function defineClothing(piece) {
     console.log("The piece is ".concat(piece.color));
-    // console.log(`The pants are ${piece.length} long.`); // raises an error as `length` is not available on all types within the `Clothing` type.
+    // console.log(`The pants are ${piece.length} long.`); // raises an error as `length` is not available on all types within the `Clothing` type, in this case the `Shirts` type.
     if ('length' in piece) {
-        console.log("The pants are ".concat(piece.length, " long.")); // works.
+        console.log("The pants are ".concat(piece.length, " long.")); // works, as we've now ensure that only
+        // a `Pants` type can make it here.
     }
 }
 // instanceOf
 function example4(arg) {
     if (arg instanceof Date) {
+        console.log(arg.getMonth); // Works, arg here is a `Date` object.
         // do something with the arg as a date object.
     }
     else {
@@ -219,6 +228,11 @@ function sharkOrFish(fish) {
         console.log("I'm a shark and live in the ocean!");
     }
 }
+var fish = {
+    kind: 'Goldfish', // The string literal for the discrimant property still needs to be set on the object.
+    age: 22,
+    bowl: 'home',
+};
 // Never
 function isAFish(fish) {
     switch (fish.kind) {
@@ -274,6 +288,10 @@ var user2 = {
     name: 'steve',
     // age: '30'; // Error is raised, we've specified this should be a number.
     age: 30,
+};
+var user3 = {
+    name: 'steve',
+    age: 20,
 };
 // Extending an object, ensuring a property exists in the passed in object.
 function howOldAreYou(person) {

@@ -61,6 +61,9 @@ let altArr: string[] = ['hello'];
 let tuple: [string, string, number] = ['Tuples have a fixed', 'length arangement', 100];
 let literal: 'literal1' | 'literal2' = 'literal1';
 
+let arrrr: number[] = [1,2,3,4];
+let myNum: number = arrrr[6]; // Does not raise an error, compiler believes any element from this array is a number type, and therefor allow `undefined` (out of bounds element) to be assigned to a variable of type `number`.
+console.log(myNum); // undefined. This is because typescript does not know the length of the array.
 ////////////////////////////////// Typing an objects properties //////////////////////////////////
 
 let caroo: {name: string; year: number;} = {
@@ -727,3 +730,32 @@ interface S {
 let sObj: S = {name: 'steve', age: 2};
 
 //
+
+// Params
+
+function logName(name: string):void {
+  console.log(name);
+}
+
+type name = Parameters<typeof logName>; // name: string;
+
+let userName: name = ['steve'];
+
+// Return Type
+
+function createPerson(name: string, age: number) {
+  return { name, age };
+}
+
+type CreatePersonFunction = typeof createPerson; // (name: string, age: number) => { name: string; age: number; }
+
+type Person3 = ReturnType<CreatePersonFunction>; // { name: string; age: number; }
+
+function greetPerson(person: Person3) {
+  console.log(`Hello, ${person.name}! You are ${person.age} years old.`);
+}
+
+let p3: Person3 = {
+  name: 'steve',
+  age: 20,
+}
