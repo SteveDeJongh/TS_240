@@ -482,6 +482,12 @@ function sharkOrFish(fish: Fish): void {
   }
 }
 
+let fish: Goldfish = {
+  kind: 'Goldfish', // The string literal for the discrimant property still needs to be set on the object.
+  age: 22,
+  bowl: 'home',
+}
+
 // Never
 
 function isAFish(fish: Fish): void {
@@ -616,6 +622,16 @@ let user2: User5<number> = {
   name: 'steve',
   // age: '30'; // Error is raised, we've specified this should be a number.
   age: 30,
+}
+
+interface User6<T1, T2> {
+  name: T1;
+  age: T2;
+}
+
+let user3: User6<string, number> = {
+  name: 'steve',
+  age: 20,
 }
 
 // Extending an object, ensuring a property exists in the passed in object.
